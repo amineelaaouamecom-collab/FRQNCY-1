@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRQNCY — Feel The Frequency | Marrakech</title>
+<meta name="description" content="FRQNCY — the most exclusive underground pool party experience in Marrakech. Reserve your spot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Permanent+Marker&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          void: '#0a0a0a',
+          charcoal: '#111111',
+          smoke: '#181818',
+          pinkx: '#ff1493',
+          magx: '#ff007f',
+          bone: '#f5f3ef',
+        },
+        fontFamily: {
+          logo: ["'Metal Mania'", 'cursive'],
+          mark: ["'Permanent Marker'", 'cursive'],
+          sans: ["'Archivo'", 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  :root{
+    --void:#0a0a0a;
+    --charcoal:#111111;
+    --smoke-bg:#181818;
+    --pink:#ff1493;
+    --mag:#ff007f;
+    --bone:#f5f3ef;
+    --grey:#9a9a9a;
+    --line: rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--bone);
+    font-family:'Archivo',sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--pink); color:#0a0a0a; }
+
+  .font-logo{ font-family:'Metal Mania',cursive; letter-spacing:.02em; }
+  .font-mark{ font-family:'Permanent Marker',cursive; }
+
+  /* ---------- grain overlay ---------- */
+  .grain{
+    position:fixed; inset:0; z-index:60; pointer-events:none;
+    opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- glow utilities ---------- */
+  .text-glow{ text-shadow:0 0 12px rgba(255,20,147,.85), 0 0 34px rgba(255,20,147,.5), 0 0 70px rgba(255,0,127,.28); }
+  .text-glow-soft{ text-shadow:0 0 18px rgba(255,20,147,.4); }
+  .ring-glow{ box-shadow:0 0 0 1px rgba(255,20,147,.35), 0 0 40px rgba(255,20,147,.14); }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:.55rem;
+    padding:1rem 2.1rem; border-radius:999px; font-weight:700; font-size:.82rem;
+    letter-spacing:.14em; text-transform:uppercase; white-space:nowrap;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, background .35s, border-color .35s;
+    cursor:pointer; border:1px solid transparent; position:relative;
+  }
+  .btn:active{ transform:scale(.97); }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--pink),var(--mag));
+    color:#0a0a0a;
+    box-shadow:0 0 24px rgba(255,20,147,.45), 0 0 70px rgba(255,0,127,.2);
+  }
+  .btn-primary:hover{ box-shadow:0 0 34px rgba(255,20,147,.75), 0 0 100px rgba(255,0,127,.4); transform:translateY(-2px); }
+  .btn-ghost{
+    background:rgba(255,255,255,.03);
+    border-color:rgba(255,255,255,.18);
+    color:var(--bone);
+    backdrop-filter:blur(10px);
+  }
+  .btn-ghost:hover{ border-color:var(--pink); box-shadow:0 0 24px rgba(255,20,147,.25); transform:translateY(-2px); }
+
+  /* ---------- navbar ---------- */
+  #navbar{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    transition:background .5s, border-color .5s, backdrop-filter .5s, box-shadow .5s;
+    border-bottom:1px solid transparent;
+  }
+  #navbar.scrolled{
+    background:rgba(10,10,10,.72);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-color:var(--line);
+    box-shadow:0 8px 40px rgba(0,0,0,.4);
+  }
+  .nav-link{ position:relative; color:#cfcfcf; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; font-weight:600; }
+  .nav-link::after{
+    content:''; position:absolute; left:0; right:0; bottom:-6px; height:1px;
+    background:linear-gradient(90deg,var(--pink),var(--mag));
+    transform:scaleX(0); transform-origin:left; transition:transform .35s;
+  }
+  .nav-link:hover{ color:var(--bone); }
+  .nav-link:hover::after{ transform:scaleX(1); }
+
+  /* ---------- portal (signature element) ---------- */
+  .portal{ position:relative; overflow:hidden; isolation:isolate; }
+  .portal__content{ position:relative; z-index:10; }
+  .portal__smoke{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.32; z-index:1; animation:drift 16s ease-in-out infinite; }
+  .portal__smoke--a{ width:46vw; height:46vw; max-width:560px; max-height:560px; background:var(--mag); top:4%; left:-14%; }
+  .portal__smoke--b{ width:50vw; height:50vw; max-width:620px; max-height:620px; background:var(--pink); bottom:-16%; right:-12%; animation-duration:20s; animation-delay:-6s; }
+  .portal__tube{ position:absolute; top:8%; bottom:8%; width:3px; z-index:2; pointer-events:none;
+    background:linear-gradient(to bottom, transparent, var(--pink) 12%, var(--mag) 88%, transparent);
+    box-shadow:0 0 14px 2px rgba(255,20,147,.85), 0 0 46px 10px rgba(255,20,147,.32);
+    animation:flicker 5.5s ease-in-out infinite; }
+  .portal__tube--l{ left:4%; }
+  .portal__tube--r{ right:4%; }
+  .portal__beams{ position:absolute; inset:0; z-index:1; pointer-events:none; }
+  .beam{ position:absolute; top:-8%; width:70px; height:60%; filter:blur(10px);
+    background:linear-gradient(to bottom, rgba(255,20,147,.28), transparent 82%);
+    animation:flicker 4.5s ease-in-out infinite; }
+  .portal__floor{ position:absolute; left:0; right:0; bottom:0; height:32%; z-index:1; pointer-events:none;
+    background:linear-gradient(to top, rgba(255,20,147,.16), transparent); }
+
+  @keyframes drift{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(-4%,3%) scale(1.09); } }
+  @keyframes flicker{ 0%,100%{ opacity:1; } 44%{ opacity:.82; } 50%{ opacity:1; } 53%{ opacity:.55; } 57%{ opacity:1; } }
+  @keyframes floatY{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  @keyframes pulseRing{ 0%,100%{ box-shadow:0 0 0 0 rgba(255,20,147,.55); } 50%{ box-shadow:0 0 0 14px rgba(255,20,147,0); } }
+  @keyframes scrollDot{ 0%{ transform:translateY(0); opacity:1; } 100%{ transform:translateY(20px); opacity:0; } }
+  @keyframes spin-slow{ to{ transform:rotate(360deg); } }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{ opacity:0; transform:translateY(34px); transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.is-visible{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    .reveal{ opacity:1 !important; transform:none !important; }
+  }
+
+  /* ---------- section labels ---------- */
+  .eyebrow{ font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; color:var(--pink); font-weight:700; }
+  .section-title{ font-family:'Permanent Marker',cursive; line-height:1; text-transform:uppercase; }
+
+  /* ---------- glass card ---------- */
+  .glass{
+    background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+    border:1px solid var(--line);
+    backdrop-filter:blur(14px);
+  }
+  .card-hover{ transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s, border-color .45s; }
+  .card-hover:hover{ transform:translateY(-8px); border-color:rgba(255,20,147,.4); box-shadow:0 20px 60px rgba(255,20,147,.14); }
+
+  /* ---------- category locked ---------- */
+  .cat-locked{ filter:grayscale(1) blur(.5px) brightness(.55); }
+  .cat-locked:hover{ filter:grayscale(1) brightness(.7); }
+
+  /* ---------- countdown ---------- */
+  .cd-num{ font-family:'Archivo',sans-serif; font-weight:900; font-variant-numeric:tabular-nums; }
+
+  /* ---------- gallery tiles ---------- */
+  .tile{ position:relative; overflow:hidden; border-radius:1.1rem; border:1px solid var(--line); }
+  .tile img, .tile .art{ transition:transform .8s cubic-bezier(.2,.8,.2,1), filter .8s; }
+  .tile:hover img, .tile:hover .art{ transform:scale(1.08); filter:saturate(1.15); }
+  .tile::after{ content:''; position:absolute; inset:0; border-radius:1.1rem; box-shadow:inset 0 0 0 1px transparent; transition:box-shadow .5s; pointer-events:none; }
+  .tile:hover::after{ box-shadow:inset 0 0 0 1px rgba(255,20,147,.55), 0 0 40px rgba(255,20,147,.25); }
+
+  /* ---------- faq ---------- */
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-q{ cursor:pointer; }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .5s cubic-bezier(.2,.8,.2,1), opacity .4s; opacity:.7; }
+  .faq-icon{ transition:transform .4s; }
+  .faq-item.open .faq-icon{ transform:rotate(45deg); }
+  .faq-item.open .faq-a{ opacity:1; }
+
+  /* ---------- whatsapp float ---------- */
+  #wa-float{ animation:pulseRing 2.6s ease-in-out infinite, floatY 3.4s ease-in-out infinite; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar{ width:10px; }
+  ::-webkit-scrollbar-track{ background:#0a0a0a; }
+  ::-webkit-scrollbar-thumb{ background:linear-gradient(var(--pink),var(--mag)); border-radius:10px; }
+
+  /* mobile menu */
+  #mobile-menu{ transition:opacity .4s, visibility .4s; }
+  #mobile-menu.hidden-menu{ opacity:0; visibility:hidden; pointer-events:none; }
+</style>
+</head>
+<body class="antialiased">
+
+<div class="grain"></div>
+
+<!-- ================= NAVBAR ================= -->
+<nav id="navbar">
+  <div class="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-20">
+    <a href="#home" class="flex items-center gap-3 group">
+      <img src="https://i.imgur.com/uQ5EHNl.jpeg" alt="FRQNCY logo" class="w-10 h-10 rounded-full ring-glow object-cover">
+      <span class="font-logo text-2xl md:text-3xl text-glow-soft">FRQNCY</span>
+    </a>
+    <div class="hidden md:flex items-center gap-10">
+      <a href="#home" class="nav-link">Home</a>
+      <a href="#event" class="nav-link">Events</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#gallery" class="nav-link">Gallery</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+    <div class="hidden md:block">
+      <a href="#event" class="btn btn-primary !py-3 !px-6 !text-[.7rem]">Reservation</a>
+    </div>
+    <button id="menu-btn" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5" aria-label="Open menu">
+      <span class="w-6 h-[2px] bg-bone"></span>
+      <span class="w-6 h-[2px] bg-bone"></span>
+      <span class="w-4 h-[2px] bg-bone self-end"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- mobile menu overlay -->
+<div id="mobile-menu" class="hidden-menu fixed inset-0 z-40 bg-void/97 backdrop-blur-xl flex flex-col items-center justify-center gap-8">
+  <a href="#home" class="nav-mobile-link font-mark text-3xl text-glow">Home</a>
+  <a href="#event" class="nav-mobile-link font-mark text-3xl text-glow">Events</a>
+  <a href="#about" class="nav-mobile-link font-mark text-3xl text-glow">About</a>
+  <a href="#gallery" class="nav-mobile-link font-mark text-3xl text-glow">Gallery</a>
+  <a href="#contact" class="nav-mobile-link font-mark text-3xl text-glow">Contact</a>
+  <a href="#event" class="btn btn-primary mt-4 nav-mobile-link">Reservation</a>
+</div>
+
+<!-- ================= HERO ================= -->
+<section id="home" class="portal min-h-[100svh] flex items-center pt-24 pb-16">
+  <div class="portal__smoke portal__smoke--a"></div>
+  <div class="portal__smoke portal__smoke--b"></div>
+  <div class="portal__beams">
+    <div class="beam" style="left:8%; transform:skewX(-10deg); animation-delay:0s;"></div>
+    <div class="beam" style="left:26%; transform:skewX(-4deg); animation-delay:.6s;"></div>
+    <div class="beam" style="left:50%; transform:skewX(0deg); animation-delay:1.2s;"></div>
+    <div class="beam" style="left:70%; transform:skewX(6deg); animation-delay:.3s;"></div>
+    <div class="beam" style="left:88%; transform:skewX(10deg); animation-delay:.9s;"></div>
+  </div>
+  <div class="portal__tube portal__tube--l"></div>
+  <div class="portal__tube portal__tube--r"></div>
+  <div class="portal__floor"></div>
+
+  <div class="portal__content max-w-5xl mx-auto px-6 text-center">
+    <p class="eyebrow reveal">Marrakech Underground</p>
+    <div class="mt-6 reveal" style="transition-delay:.1s">
+      <span class="font-logo text-glow text-[clamp(3rem,10vw,7rem)] leading-none">FRQNCY</span>
+    </div>
+    <h1 class="font-mark text-glow text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] mt-4 reveal" style="transition-delay:.2s">
+      Feel The Frequency
+    </h1>
+    <p class="mt-6 text-base md:text-lg text-[#cfcfcf] max-w-xl mx-auto reveal" style="transition-delay:.3s">
+      The most exclusive underground pool party experience in Marrakech —
+      sound, light and heat, turned up until sunrise.
+    </p>
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 reveal" style="transition-delay:.4s">
+      <a href="https://wa.me/212699126239?text=Hi%20FRQNCY!%20I%27d%20like%20to%20reserve%20my%20spot%20for%20the%20Pool%20Party%20on%2018.07.2026%20%F0%9F%94%A5" target="_blank" rel="noopener" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.6-.7 1.9-1.3.2-.6.2-1.1.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5c1.5.8 3.3 1.3 5.2 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.1c-1.7 0-3.4-.5-4.8-1.3l-.3-.2-3.2 1 1-3.1-.2-.3C3.6 14.8 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 9.1-8.9 9.1z"/></svg>
+        Reserve on WhatsApp
+      </a>
+      <a href="#event" class="btn btn-ghost">Get Event Info</a>
+    </div>
+
+    <div class="mt-16 flex flex-col items-center gap-2 reveal" style="transition-delay:.5s">
+      <span class="text-[.65rem] tracking-[.3em] uppercase text-grey">Scroll</span>
+      <div class="w-[1px] h-8 bg-gradient-to-b from-pinkx to-transparent relative overflow-hidden">
+        <div class="w-1 h-1 rounded-full bg-pinkx absolute left-1/2 -translate-x-1/2" style="animation:scrollDot 1.8s ease-in-out infinite;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NEXT EVENT ================= -->
+<section id="event" class="portal py-28 md:py-36 bg-charcoal">
+  <div class="portal__smoke portal__smoke--a" style="opacity:.18;"></div>
+  <div class="portal__smoke portal__smoke--b" style="opacity:.18;"></div>
+  <div class="portal__tube portal__tube--l" style="opacity:.5;"></div>
+  <div class="portal__tube portal__tube--r" style="opacity:.5;"></div>
+
+  <div class="portal__content max-w-4xl mx-auto px-6">
+    <div class="text-center mb-14 reveal">
+      <p class="eyebrow">Next Drop</p>
+      <h2 class="section-title text-[clamp(2rem,6vw,3.5rem)] mt-3">The Only One Live</h2>
+    </div>
+
+    <div class="glass rounded-[2rem] p-8 md:p-12 ring-glow reveal relative overflow-hidden">
+      <div class="absolute top-6 right-6 md:top-8 md:right-8">
+        <span class="inline-flex items-center gap-2 text-[.65rem] tracking-[.2em] uppercase font-bold px-3 py-2 rounded-full border border-pinkx/50 text-pinkx bg-pinkx/10">
+          <span class="w-1.5 h-1.5 rounded-full bg-pinkx" style="animation:pulseRing 2s infinite;"></span>
+          Limited Places
+        </span>
+      </div>
+
+      <p class="eyebrow !text-left mb-2">Pool Edition</p>
+      <h3 class="font-mark text-glow text-[clamp(2rem,6vw,3.2rem)] leading-none mb-6">FRQNCY PARTY</h3>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 text-left">
+        <div>
+          <p class="text-[.65rem] tracking-[.2em] uppercase text-grey mb-1">Location</p>
+          <p class="font-semibold flex items-center gap-1.5">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-pinkx shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Marrakech
+          </p>
+        </div>
+        <div>
+          <p class="text-[.65rem] tracking-[.2em] uppercase text-grey mb-1">Date</p>
+          <p class="font-semibold">Sat • 18.07.2026</p>
+        </div>
+        <div>
+          <p class="text-[.65rem] tracking-[.2em] uppercase text-grey mb-1">Doors Open</p>
+          <p class="font-semibold">8:00 PM</p>
+        </div>
+        <div>
+          <p class="text-[.65rem] tracking-[.2em] uppercase text-grey mb-1">Reservation</p>
+          <a href="tel:+212699126239" class="font-semibold hover:text-pinkx transition-colors">+212 699-126239</a>
+        </div>
+      </div>
+
+      <!-- countdown -->
+      <div class="grid grid-cols-4 gap-3 md:gap-5 mb-10" id="countdown">
+        <div class="glass rounded-xl py-4 text-center border-white/10">
+          <div class="cd-num text-2xl md:text-4xl text-glow" id="cd-days">00</div>
+          <div class="text-[.6rem] tracking-[.2em] uppercase text-grey mt-1">Days</div>
+        </div>
+        <div class="glass rounded-xl py-4 text-center border-white/10">
+          <div class="cd-num text-2xl md:text-4xl text-glow" id="cd-hours">00</div>
+          <div class="text-[.6rem] tracking-[.2em] uppercase text-grey mt-1">Hours</div>
+        </div>
+        <div class="glass rounded-xl py-4 text-center border-white/10">
+          <div class="cd-num text-2xl md:text-4xl text-glow" id="cd-min">00</div>
+          <div class="text-[.6rem] tracking-[.2em] uppercase text-grey mt-1">Minutes</div>
+        </div>
+        <div class="glass rounded-xl py-4 text-center border-white/10">
+          <div class="cd-num text-2xl md:text-4xl text-glow" id="cd-sec">00</div>
+          <div class="text-[.6rem] tracking-[.2em] uppercase text-grey mt-1">Seconds</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mb-10">
+        <div class="rounded-xl border border-white/10 py-5 text-center bg-white/[.02]">
+          <p class="text-[.65rem] tracking-[.2em] uppercase text-grey mb-1">Girls</p>
+          <p class="font-mark text-2xl text-pinkx">100 DH</p>
+        </div>
+        <div class="rounded-xl border border-white/10 py-5 text-center bg-white/[.02]">
+          <p class="text-[.65rem] tracking-[.2em] uppercase text-grey mb-1">Boys</p>
+          <p class="font-mark text-2xl text-pinkx">200 DH</p>
+        </div>
+      </div>
+
+      <a href="https://wa.me/212699126239?text=Hi%20FRQNCY!%20I%27d%20like%20to%20reserve%20my%20spot%20for%20the%20Pool%20Party%20on%2018.07.2026%20%F0%9F%94%A5" target="_blank" rel="noopener" class="btn btn-primary w-full !py-5 !text-sm">
+        Reserve Now →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHATSAPP CTA BANNER ================= -->
+<section class="relative py-24 bg-void overflow-hidden">
+  <div class="absolute inset-0 flex items-center justify-center opacity-[.06] pointer-events-none select-none">
+    <span class="font-logo text-[18vw] whitespace-nowrap">FRQNCY FRQNCY</span>
+  </div>
+  <div class="relative max-w-3xl mx-auto px-6 text-center reveal">
+    <p class="eyebrow mb-4">One Message. You're In.</p>
+    <h2 class="section-title text-[clamp(1.8rem,5vw,3rem)] mb-8">Reserve Your Spot</h2>
+    <a href="https://wa.me/212699126239?text=Hi%20FRQNCY!%20I%27d%20like%20to%20reserve%20my%20spot%20for%20the%20Pool%20Party%20on%2018.07.2026%20%F0%9F%94%A5" target="_blank" rel="noopener" class="btn btn-primary !py-6 !px-12 !text-base">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.6-.7 1.9-1.3.2-.6.2-1.1.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5c1.5.8 3.3 1.3 5.2 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.1c-1.7 0-3.4-.5-4.8-1.3l-.3-.2-3.2 1 1-3.1-.2-.3C3.6 14.8 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 9.1-8.9 9.1z"/></svg>
+      Chat With Us
+    </a>
+  </div>
+</section>
+
+<!-- ================= EVENT INFO ================= -->
+<section id="about" class="py-24 md:py-32 bg-charcoal">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="eyebrow">What's Included</p>
+      <h2 class="section-title text-[clamp(2rem,5vw,3.2rem)] mt-3">Everything For The Night</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="info-grid"></div>
+  </div>
+</section>
+
+<!-- ================= CATEGORIES ================= -->
+<section class="py-24 md:py-32 bg-void">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="eyebrow">Choose Your Night</p>
+      <h2 class="section-title text-[clamp(2rem,5vw,3.2rem)] mt-3">Three Experiences</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6" id="cat-grid"></div>
+  </div>
+</section>
+
+<!-- ================= LINEUP ================= -->
+<section class="portal py-24 md:py-32 bg-charcoal">
+  <div class="portal__smoke portal__smoke--a" style="opacity:.15;"></div>
+  <div class="portal__smoke portal__smoke--b" style="opacity:.15;"></div>
+  <div class="portal__content max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="eyebrow">On The Decks</p>
+      <h2 class="section-title text-[clamp(2rem,5vw,3.2rem)] mt-3">The Lineup</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" id="lineup-grid"></div>
+  </div>
+</section>
+
+<!-- ================= TIMELINE ================= -->
+<section class="py-24 md:py-32 bg-void">
+  <div class="max-w-2xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="eyebrow">The Night, Hour By Hour</p>
+      <h2 class="section-title text-[clamp(2rem,5vw,3.2rem)] mt-3">Timeline</h2>
+    </div>
+    <div class="relative pl-10" id="timeline-list">
+      <div class="absolute left-[7px] top-2 bottom-2 w-[2px] bg-gradient-to-b from-pinkx via-magx to-transparent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHY CHOOSE ================= -->
+<section class="py-24 md:py-32 bg-charcoal">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="eyebrow">Why FRQNCY</p>
+      <h2 class="section-title text-[clamp(2rem,5vw,3.2rem)] mt-3">Not Just A Party</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="why-grid"></div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section id="gallery" class="py-24 md:py-32 bg-void">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="eyebrow">Frame By Frame</p>
+      <h2 class="section-title text-[clamp(2rem,5vw,3.2rem)] mt-3">The Atmosphere</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[140px] md:auto-rows-[180px]" id="gallery-grid"></div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="py-24 md:py-32 bg-charcoal">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="text-center mb-14 reveal">
+      <p class="eyebrow">Good To Know</p>
+      <h2 class="section-title text-[clamp(2rem,5vw,3.2rem)] mt-3">FAQ</h2>
+    </div>
+    <div id="faq-list"></div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer id="contact" class="portal bg-charcoal border-t border-white/5 pt-20 pb-10">
+  <div class="portal__tube portal__tube--l" style="opacity:.4;"></div>
+  <div class="portal__tube portal__tube--r" style="opacity:.4;"></div>
+  <div class="portal__content max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-4 gap-12 mb-16">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <img src="{{LOGO}}" alt="FRQNCY logo" class="w-11 h-11 rounded-full ring-glow object-cover">
+          <span class="font-logo text-3xl text-glow-soft">FRQNCY</span>
+        </div>
+        <p class="text-[#a8a8a8] max-w-sm">Feel the frequency. Marrakech's most exclusive underground party experience — sound, light and heat, every single time.</p>
+      </div>
+      <div>
+        <p class="text-[.65rem] tracking-[.2em] uppercase text-grey mb-4">Navigate</p>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#home" class="hover:text-pinkx transition-colors">Home</a></li>
+          <li><a href="#event" class="hover:text-pinkx transition-colors">Events</a></li>
+          <li><a href="#about" class="hover:text-pinkx transition-colors">About</a></li>
+          <li><a href="#gallery" class="hover:text-pinkx transition-colors">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-[.65rem] tracking-[.2em] uppercase text-grey mb-4">Connect</p>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href="https://instagram.com/frqncy1.0" target="_blank" rel="noopener" class="hover:text-pinkx transition-colors flex items-center gap-2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              @frqncy1.0
+            </a>
+          </li>
+          <li>
+            <a href="https://wa.me/212699126239" target="_blank" rel="noopener" class="hover:text-pinkx transition-colors flex items-center gap-2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.6-.7 1.9-1.3.2-.6.2-1.1.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5c1.5.8 3.3 1.3 5.2 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.1c-1.7 0-3.4-.5-4.8-1.3l-.3-.2-3.2 1 1-3.1-.2-.3C3.6 14.8 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 9.1-8.9 9.1z"/></svg>
+              +212 699-126239
+            </a>
+          </li>
+          <li class="flex items-center gap-2 text-[#a8a8a8]">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Marrakech, Morocco
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#7a7a7a]">
+      <p>© 2026 FRQNCY. All rights reserved.</p>
+      <a href="#home" class="hover:text-pinkx transition-colors tracking-[.2em] uppercase">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= FLOATING WHATSAPP ================= -->
+<a id="wa-float" href="https://wa.me/212699126239?text=Hi%20FRQNCY!%20I%27d%20like%20to%20reserve%20my%20spot%20for%20the%20Pool%20Party%20on%2018.07.2026%20%F0%9F%94%A5" target="_blank" rel="noopener"
+  class="fixed bottom-6 right-6 z-40 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center"
+  style="background:linear-gradient(135deg,var(--pink),var(--mag)); box-shadow:0 0 30px rgba(255,20,147,.55);" aria-label="Reserve on WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.6-.7 1.9-1.3.2-.6.2-1.1.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5c1.5.8 3.3 1.3 5.2 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.1c-1.7 0-3.4-.5-4.8-1.3l-.3-.2-3.2 1 1-3.1-.2-.3C3.6 14.8 3.1 13.4 3.1 12c0-4.9 4-8.9 8.9-8.9s8.9 4 8.9 8.9-4 9.1-8.9 9.1z"/></svg>
+</a>
+
+<script>
+/* =============== DATA =============== */
+const WA = "https://wa.me/212699126239?text=Hi%20FRQNCY!%20I%27d%20like%20to%20reserve%20my%20spot%20for%20the%20Pool%20Party%20on%2018.07.2026%20%F0%9F%94%A5";
+
+const icon = (path) => `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+
+const ICONS = {
+  pool: icon('<path d="M2 17c1.5-1 3-1 4.5 0s3 1 4.5 0 3-1 4.5 0 3 1 4.5 0"/><path d="M2 21c1.5-1 3-1 4.5 0s3 1 4.5 0 3-1 4.5 0 3 1 4.5 0"/><path d="M8 13V6a2 2 0 1 1 4 0v2"/><path d="M14 13V9a2 2 0 1 1 4 0v4"/>'),
+  dj: icon('<circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M9 18V5l11-2v13"/>'),
+  mic: icon('<path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v4"/><path d="M8 22h8"/>'),
+  sound: icon('<path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.08"/>'),
+  drink: icon('<path d="M8 21h8"/><path d="M12 15v6"/><path d="m3 3 6.5 6.5"/><path d="M20.5 3 12 11.5"/><path d="M3 3h18l-8 9.5v0L3 3Z"/>'),
+  vip: icon('<path d="m12 2 2.5 5.5L20 9l-4.5 3.7L17 19l-5-3.2L7 19l1.5-6.3L4 9l5.5-1.5L12 2Z"/>'),
+  lock: icon('<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'),
+  wave: icon('<circle cx="12" cy="12" r="1"/><path d="M8.5 8.5a5 5 0 0 1 7 0"/><path d="M5.5 5.5a9.5 9.5 0 0 1 13 0"/><path d="M8.5 15.5a5 5 0 0 0 7 0" transform="rotate(180 12 15.5)"/>'),
+  glow: icon('<path d="M12 3v2"/><path d="m18.4 5.6-1.4 1.4"/><path d="M21 12h-2"/><path d="m18.4 18.4-1.4-1.4"/><path d="M12 19v2"/><path d="m6.6 18.4 1.4-1.4"/><path d="M5 12H3"/><path d="m6.6 5.6 1.4 1.4"/><circle cx="12" cy="12" r="4"/>'),
+  crown: icon('<path d="m2 20 2-10 5 4 3-8 3 8 5-4 2 10Z"/>'),
+  bolt: icon('<path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/>'),
+  star: icon('<path d="m12 2 2.9 6.6 7.1.6-5.4 4.8 1.6 7-6.2-3.9-6.2 3.9 1.6-7L2 9.2l7.1-.6L12 2Z"/>'),
+  users: icon('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
+  clock: icon('<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'),
+  arrow: icon('<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>'),
+};
+
+const infoCards = [
+  { icon:'pool',  title:'Pool Party',            text:"Private access to the club's luxury pool deck, day into night." },
+  { icon:'dj',    title:'Professional DJs',       text:'Three headline sets, one continuous groove until sunrise.' },
+  { icon:'mic',   title:'Live Animation',         text:'Hosts and performers keeping the energy at peak all night.' },
+  { icon:'sound', title:'Premium Sound System',   text:'A full-range rig built to move a room, not just fill it.' },
+  { icon:'drink', title:'Drinks',                 text:'Signature cocktails and bottle service at every bar.' },
+  { icon:'vip',   title:'VIP Atmosphere',         text:'A night that feels curated, not crowded.' },
+];
+
+const whyCards = [
+  { icon:'glow',  title:'Premium Atmosphere', text:'Every detail built for the night, not just the party.' },
+  { icon:'dj',    title:'Best DJs',            text:"Marrakech's sharpest selectors, one lineup." },
+  { icon:'crown', title:'Luxury Venue',        text:'A space designed to be felt, not just seen.' },
+  { icon:'bolt',  title:'High Energy',         text:'The crowd sets the tempo, we set the volume.' },
+  { icon:'star',  title:'VIP Experience',      text:'Treated like you belong — because you do.' },
+  { icon:'users', title:'Amazing Crowd',       text:'The right people, every single time.' },
+];
+
+const timelineData = [
+  { time:'7:30 PM', title:'Arrival',          text:'Doors approach, first drinks poured, the pool deck lights come up.' },
+  { time:'8:00 PM', title:'Doors Open',        text:'Official start — the pool deck opens to everyone.' },
+  { time:'9:30 PM', title:'DJ Performances',   text:'Hellboy, Fay6aaal & TLYX trade back-to-back sets.' },
+  { time:'11:30 PM',title:'Peak Hour',         text:'Full crowd, full volume, the whole deck moving as one.' },
+  { time:'1:00 AM', title:'Late Night',        text:'The last sets before sunrise close the night out.' },
+];
+
+const faqData = [
+  { q:'Dress Code',   a:'Come sharp. Smart, stylish, swim-ready for the pool deck — no sportswear, no flip-flops.' },
+  { q:'Reservation',  a:"Message us on WhatsApp with your name and headcount. We'll confirm your spot and hold it until doors." },
+  { q:'Parking',      a:'Free parking is available on-site, a short walk from the entrance.' },
+  { q:'Age Limit',    a:'FRQNCY is 18+. Bring ID — we do check at the door.' },
+  { q:'Location',     a:'Marrakech. The exact address is sent by WhatsApp after your reservation is confirmed.' },
+];
+
+const djData = [
+  { name:'HELLBOY',   handle:'@hellboy.ginal',  img:'https://i.imgur.com/KLlapis.jpeg' },
+  { name:'FAY6AAAL',  handle:'@dj.fay6aaal',    img:'https://i.imgur.com/zhdizXD.jpeg' },
+  { name:'TLYX',      handle:'@djtlyx',         img:'https://i.imgur.com/qMSIFID.jpeg' },
+];
+
+/* =============== RENDER: INFO GRID =============== */
+document.getElementById('info-grid').innerHTML = infoCards.map((c,i)=>`
+  <div class="glass card-hover rounded-2xl p-8 reveal" style="transition-delay:${i*0.08}s">
+    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5 text-pinkx bg-pinkx/10 border border-pinkx/25">${ICONS[c.icon]}</div>
+    <h3 class="font-semibold text-lg mb-2">${c.title}</h3>
+    <p class="text-sm text-[#a8a8a8] leading-relaxed">${c.text}</p>
+  </div>
+`).join('');
+
+/* =============== RENDER: WHY GRID =============== */
+document.getElementById('why-grid').innerHTML = whyCards.map((c,i)=>`
+  <div class="glass card-hover rounded-2xl p-8 reveal" style="transition-delay:${i*0.08}s">
+    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-5 text-pinkx bg-pinkx/10 border border-pinkx/25">${ICONS[c.icon]}</div>
+    <h3 class="font-semibold text-lg mb-2">${c.title}</h3>
+    <p class="text-sm text-[#a8a8a8] leading-relaxed">${c.text}</p>
+  </div>
+`).join('');
+
+/* =============== RENDER: CATEGORIES =============== */
+const catGrid = document.getElementById('cat-grid');
+catGrid.innerHTML = `
+  <div class="reveal relative rounded-2xl overflow-hidden border border-pinkx/40 group cursor-pointer" style="box-shadow:0 0 50px rgba(255,20,147,.25);" onclick="document.getElementById('event').scrollIntoView({behavior:'smooth'})">
+    <div class="absolute inset-0" style="background:radial-gradient(circle at 30% 20%, rgba(255,20,147,.35), transparent 60%), linear-gradient(160deg,#1a0512,#0a0a0a 70%);"></div>
+    <div class="relative z-10 p-10 min-h-[280px] flex flex-col justify-between">
+      <span class="inline-flex w-fit items-center gap-2 text-[.62rem] tracking-[.2em] uppercase font-bold px-3 py-1.5 rounded-full bg-pinkx text-void">
+        <span class="w-1.5 h-1.5 rounded-full bg-void"></span> Active
+      </span>
+      <div>
+        <h3 class="font-mark text-3xl text-glow mb-2">Pool Party</h3>
+        <p class="text-sm text-[#cfcfcf] mb-6">Marrakech's daylight-to-dark pool experience. Reserve now.</p>
+        <span class="inline-flex items-center gap-2 text-xs tracking-[.15em] uppercase font-bold text-pinkx group-hover:gap-3 transition-all">Enter ${ICONS.arrow}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal relative rounded-2xl overflow-hidden border border-white/10 cat-locked transition-all" style="transition-delay:.1s">
+    <div class="absolute inset-0" style="background:linear-gradient(160deg,#161616,#0a0a0a 70%);"></div>
+    <div class="relative z-10 p-10 min-h-[280px] flex flex-col justify-between">
+      <span class="inline-flex w-fit items-center gap-2 text-[.62rem] tracking-[.2em] uppercase font-bold px-3 py-1.5 rounded-full bg-white/10 text-[#bbb]">${ICONS.lock} Locked</span>
+      <div>
+        <h3 class="font-mark text-3xl mb-2 text-[#888]">After Party</h3>
+        <p class="text-sm text-[#777] mb-6">The night doesn't stop at the pool.</p>
+        <span class="text-xs tracking-[.15em] uppercase font-bold text-[#777]">Coming Soon</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal relative rounded-2xl overflow-hidden border border-white/10 cat-locked transition-all" style="transition-delay:.2s">
+    <div class="absolute inset-0" style="background:linear-gradient(160deg,#161616,#0a0a0a 70%);"></div>
+    <div class="relative z-10 p-10 min-h-[280px] flex flex-col justify-between">
+      <span class="inline-flex w-fit items-center gap-2 text-[.62rem] tracking-[.2em] uppercase font-bold px-3 py-1.5 rounded-full bg-white/10 text-[#bbb]">${ICONS.lock} Locked</span>
+      <div>
+        <h3 class="font-mark text-3xl mb-2 text-[#888]">Fame Party</h3>
+        <p class="text-sm text-[#777] mb-6">Our biggest night yet. Details drop soon.</p>
+        <span class="text-xs tracking-[.15em] uppercase font-bold text-[#777]">Coming Soon</span>
+      </div>
+    </div>
+  </div>
+`;
+
+/* =============== RENDER: LINEUP =============== */
+document.getElementById('lineup-grid').innerHTML = djData.map((d,i)=>`
+  <div class="reveal group" style="transition-delay:${i*0.1}s">
+    <div class="tile ring-glow aspect-[4/5]">
+      <img src="${d.img}" alt="DJ ${d.name}" class="w-full h-full object-cover">
+      <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/70 to-transparent">
+        <p class="text-[.62rem] tracking-[.25em] uppercase text-pinkx mb-1">Party DJ</p>
+        <h3 class="font-mark text-glow text-3xl leading-none mb-2">${d.name}</h3>
+        <p class="text-xs text-[#cfcfcf] flex items-center gap-1.5">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          ${d.handle}
+        </p>
+      </div>
+    </div>
+  </div>
+`).join('');
+
+/* =============== RENDER: TIMELINE =============== */
+document.getElementById('timeline-list').innerHTML += timelineData.map((t,i)=>`
+  <div class="relative pb-12 last:pb-0 reveal" style="transition-delay:${i*0.1}s">
+    <div class="absolute -left-10 top-1 w-4 h-4 rounded-full bg-void border-2 border-pinkx" style="box-shadow:0 0 14px rgba(255,20,147,.7);"></div>
+    <p class="cd-num text-pinkx text-sm tracking-[.1em] mb-1">${t.time}</p>
+    <h3 class="font-mark text-2xl mb-1">${t.title}</h3>
+    <p class="text-sm text-[#a8a8a8]">${t.text}</p>
+  </div>
+`).join('');
+
+/* =============== RENDER: GALLERY =============== */
+const galleryTiles = [
+  { type:'img', src:'{{HELLBOY}}', span:'row-span-2 col-span-1' },
+  { type:'art', bg:'radial-gradient(circle at 30% 30%, rgba(255,20,147,.55), transparent 60%), #0d0d0d', span:'row-span-1 col-span-1' },
+  { type:'art', bg:'radial-gradient(circle at 70% 60%, rgba(255,0,127,.5), transparent 65%), #111', span:'row-span-1 col-span-1' },
+  { type:'img', src:'{{TLYX}}', span:'row-span-2 col-span-1' },
+  { type:'art', bg:'linear-gradient(135deg, rgba(255,20,147,.35), transparent 70%), #0a0a0a', span:'row-span-1 col-span-1' },
+  { type:'img', src:'{{FAY}}', span:'row-span-2 col-span-1' },
+  { type:'art', bg:'radial-gradient(circle at 50% 20%, rgba(255,20,147,.45), transparent 55%), #111', span:'row-span-1 col-span-1' },
+  { type:'art', bg:'radial-gradient(circle at 40% 80%, rgba(255,0,127,.4), transparent 60%), #0d0d0d', span:'row-span-1 col-span-1' },
+];
+document.getElementById('gallery-grid').innerHTML = galleryTiles.map((g,i)=>`
+  <div class="tile ${g.span} reveal" style="transition-delay:${(i%6)*0.06}s">
+    ${g.type==='img'
+      ? `<img src="${g.src}" alt="FRQNCY atmosphere" class="w-full h-full object-cover">`
+      : `<div class="art w-full h-full" style="background:${g.bg}"></div>`}
+  </div>
+`).join('');
+
+/* =============== RENDER: FAQ =============== */
+document.getElementById('faq-list').innerHTML = faqData.map((f,i)=>`
+  <div class="faq-item reveal" style="transition-delay:${i*0.06}s">
+    <button class="faq-q w-full flex items-center justify-between py-6 text-left" onclick="toggleFaq(${i})">
+      <span class="font-semibold text-base md:text-lg">${f.q}</span>
+      <span class="faq-icon text-pinkx text-2xl leading-none">+</span>
+    </button>
+    <div class="faq-a" id="faq-a-${i}">
+      <p class="text-sm text-[#a8a8a8] pb-6 max-w-xl">${f.a}</p>
+    </div>
+  </div>
+`).join('');
+
+function toggleFaq(i){
+  const item = document.querySelectorAll('.faq-item')[i];
+  const answer = document.getElementById('faq-a-'+i);
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach((el,idx)=>{
+    el.classList.remove('open');
+    document.getElementById('faq-a-'+idx).style.maxHeight = null;
+  });
+  if(!isOpen){
+    item.classList.add('open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+}
+
+/* =============== NAVBAR SCROLL =============== */
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', ()=>{
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* =============== MOBILE MENU =============== */
+const menuBtn = document.getElementById('menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+menuBtn.addEventListener('click', ()=> mobileMenu.classList.toggle('hidden-menu'));
+document.querySelectorAll('.nav-mobile-link').forEach(a=>{
+  a.addEventListener('click', ()=> mobileMenu.classList.add('hidden-menu'));
+});
+
+/* =============== COUNTDOWN =============== */
+const target = new Date('2026-07-18T20:00:00');
+function updateCountdown(){
+  const now = new Date();
+  let diff = target - now;
+  if(diff < 0) diff = 0;
+  const d = Math.floor(diff/(1000*60*60*24));
+  const h = Math.floor((diff/(1000*60*60))%24);
+  const m = Math.floor((diff/(1000*60))%60);
+  const s = Math.floor((diff/1000)%60);
+  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-min').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-sec').textContent = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* =============== SCROLL REVEAL =============== */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold:0.12, rootMargin:'0px 0px -60px 0px' });
+
+function observeReveals(){
+  document.querySelectorAll('.reveal').forEach(el=> observer.observe(el));
+}
+// Run once immediately for static reveals, and again after dynamic content renders
+observeReveals();
+setTimeout(observeReveals, 50);
+</script>
+
+</body>
+</html>
